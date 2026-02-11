@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身份驗證中</title>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f9f9f9; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #06C755; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;">
+        <div class="loader" style="margin: 0 auto 20px;"></div>
+        <p id="status">正在安全驗證身分，請稍候...</p>
+    </div>
+
+    <script>
+        async function main() {
+            const statusEl = document.getElementById('status');
+            try {
+                // 1. 初始化 LIFF
+                await liff.init({ liffId: "2009104631-pHyus8WS" });
+
+                // 2. 檢查登入
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                } else {
+                    // 3. 取得 Profile
+                    const profile = await liff.getProfile();
+                    
+                    // 4. 跳轉到 n8n Form (帶入 userId)
+                    const targetUrl = `https://tn8n.artshirt.com.tw/form/liff-register?userId=${profile.userId}`;
+                    window.location.replace(targetUrl);
+                }
+            } catch (err) {
+                statusEl.innerText = "驗證出錯：" + err.message;
+                console.error(err);
+            }
+        }
+        main();
+    </script>
+</body>
+</html>
