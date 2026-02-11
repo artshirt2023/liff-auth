@@ -32,7 +32,7 @@
                     const profile = await liff.getProfile();
                     
                     // 4. 跳轉到 n8n Form (帶入 userId)
-                    const targetUrl = `https://tn8n.artshirt.com.tw/form/liff-register?userId=${profile.userId}`;
+                    const targetUrl = `https://artshirtn8n.zeabur.app/form/LIFF-Register?userId=${profile.userId}`;
                     window.location.replace(targetUrl);
                 }
             } catch (err) {
@@ -43,4 +43,5 @@
         main();
     </script>
 </body>
+
 </html>
